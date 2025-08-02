@@ -1,4 +1,4 @@
-package EX20;
+package BancoDeDados;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,17 +50,40 @@ public class ProdutoDAO {
         }
     }
 
+    public Produto buscarProdutoPorID(int id){
+        Produto produto = null;
+        String sql = "SELECT * FROM produtos WHERE id = ?";
+
+        try(Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)){
+
+            stmt.setInt(1, id);
+
+            try(ResultSet rs = stmt.executeQuery()){
+                if(rs.next()){
+                    produto = new Produto();
+                    produto.setId(rs.getInt("id"));
+                    produto.setNome(rs.getString("nome"));
+                    produto.setPreco(rs.getFloat("preco"));
+                }
+            }
+        }catch(SQLException e){
+            System.out.println("Erro ao buscar produto: " + e.getMessage());
+        }
+
+        return produto;
+    }
+
     public List<Produto> listarProdutos(){
         List<Produto> lista = new ArrayList<>();
         String sql = "SELECT * FROM produtos";
 
-        try(Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery(sql)){
+        try(Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()){
 
             while(rs.next()){
                 Produto produto = new Produto();
-                produto.setId(rs.getInt("Id"));
-                produto.setNome(rs.getString("Nome"));
-                produto.setPreco(rs.getFloat("Preco"));
+                produto.setId(rs.getInt("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setPreco(rs.getFloat("preco"));
                 lista.add(produto);
             }
 

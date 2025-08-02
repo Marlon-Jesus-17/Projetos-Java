@@ -1,30 +1,37 @@
-package EX20;
+package BancoDeDados;
 
-import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-        ClienteDAO clienteDAO = new ClienteDAO();
+        Scanner scan = new Scanner(System.in);
+
         ProdutoDAO produtoDAO = new ProdutoDAO();
+        ClienteDAO clienteDAO = new ClienteDAO();
 
-        Cliente cliente = new Cliente("Marlon", "Marlon@gmail.com");
-        Produto produto = new Produto("Ar-condicionado", 1.950f);
-        Produto produtoAtualizado = new Produto(1, "Ar-condicionado", 1950.99f);
+        int op;
 
-        //clienteDAO.inserirCliente(cliente);
-        //produtoDAO.inserirProduto(produto);
+        do{
+            System.out.println("\n\n1 - Menu de produtos\n2 - Menu de clientes\n0 - Sair");
+            op = scan.nextInt();
+            scan.nextLine();
 
-        //produtoDAO.atualizarProduto(produtoAtualizado);
+            switch(op){
+                case 0:
+                    System.out.println("\n\nSaindo...");
+                    break;
+                case 1:
+                    Menus.menuProdutos(scan, produtoDAO);
+                    break;
+                case 2:
+                    Menus.menuClientes(scan, clienteDAO);
+                    break;
+                default:
+                    System.out.println("\n\nOpção inválida...");
+            }
+        }while(op != 0);
 
-        List<Cliente> clientes = clienteDAO.listarClientes();
-        for(Cliente cliente1 : clientes){
-            System.out.println(cliente1.getId() + " - " + cliente1.getNome() + " - " + cliente1.getEmail());
-        }
-
-        List<Produto> produtos = produtoDAO.listarProdutos();
-        for(Produto produto1 : produtos){
-            System.out.println(produto1.getId() + " - " + produto1.getNome() + " - " + produto1.getPreco());
-        }
+        scan.close();
     }
 }

@@ -1,4 +1,4 @@
-package EX20;
+package BancoDeDados;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,17 +51,41 @@ public class ClienteDAO {
         }
     }
 
+    public Cliente buscarClientePorID(int id){
+        Cliente cliente = null;
+        String sql = "SELECT * FROM clientes WHERE id = ?";
+
+        try(Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)){
+
+            stmt.setInt(1, id);
+
+            try(ResultSet rs = stmt.executeQuery()){
+
+                if(rs.next()){
+                    cliente = new Cliente();
+                    cliente.setId(rs.getInt("id"));
+                    cliente.setNome(rs.getString("nome"));
+                    cliente.setEmail(rs.getString("email"));
+                }
+            }
+        }catch(SQLException e){
+            System.out.println("Erro ao buscar cliente: " + e.getMessage());
+        }
+
+        return cliente;
+    }
+
     public List<Cliente> listarClientes(){
         List<Cliente> lista = new ArrayList<>();
         String sql = "SELECT * FROM clientes";
 
-        try(Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery(sql)){
+        try(Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()){
 
             while(rs.next()){
                 Cliente cliente = new Cliente();
-                cliente.setId(rs.getInt("Id"));
-                cliente.setNome(rs.getString("Nome"));
-                cliente.setEmail(rs.getString("Email"));
+                cliente.setId(rs.getInt("id"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setEmail(rs.getString("email"));
                 lista.add(cliente);
             }
         }catch(SQLException e){

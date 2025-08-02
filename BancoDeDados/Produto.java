@@ -1,4 +1,4 @@
-package EX20;
+package BancoDeDados;
 
 public class Produto {
     private int id;
@@ -40,6 +40,11 @@ public class Produto {
 
     public void setPreco(float preco) {
         this.preco = preco;
+    }
+
+    @Override
+    public String toString(){
+        return getId() + " - " + getNome() + " - " + getPreco();
     }
 
 }

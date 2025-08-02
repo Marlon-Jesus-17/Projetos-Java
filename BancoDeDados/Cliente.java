@@ -1,4 +1,4 @@
-package EX20;
+package BancoDeDados;
 
 public class Cliente {
 
@@ -43,4 +43,8 @@ public class Cliente {
         this.email = email;
     }
 
+    @Override
+    public String toString(){
+        return getId() + " - " + getNome() + " - " + getEmail();
+    }
 }
